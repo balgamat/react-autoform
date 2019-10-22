@@ -1,6 +1,6 @@
 {
   "name": "react-autoform",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A React component for simple creation of forms to edit any object, that can e.g. serve as the C+U in your CRUD.",
   "author": "Matej Balga",
   "main": "src/index.ts",
