@@ -15,10 +15,7 @@
     "build": "npm version patch && rm -rf ./build && tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "prepare": "yarn build",
-    "prepublishOnly": "yarn lint",
-    "lint": "tslint -p tsconfig.json",
-    "preversion": "yarn lint",
-    "postversion": "git push && git push --tags"
+    "lint": "tslint -p tsconfig.json"
   },
   "homepage": "https://github.com/balgamat/react-autoform.git#readme",
   "license": "GPL-3.0",
