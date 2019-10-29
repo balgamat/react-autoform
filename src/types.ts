@@ -25,7 +25,7 @@ export interface Field<T, F, C, O> {
 }
 
 export interface WithOptionsInputProps<T, O, optionsUnwrapped = false> {
-  options: optionsUnwrapped extends false ? ((o: T) => Option<O>[]): Option<O>[];
+  options: optionsUnwrapped extends false ? ((o: T) => Option<O>[]) : Option<O>[];
   optionLabelSelector: (option: O) => NonNullable<React.ReactNode>;
   optionIdentifierSelector: (option: O) => any;
 }
@@ -37,4 +37,5 @@ export interface AutoFormProps<T extends object, F, O, C extends string = Suppor
   fields: Array<Field<T, F, C, O>>;
   updateFn(o: T): void;
   components?: ComponentsDictionary<C, F>;
+  formProps?: object;
 }

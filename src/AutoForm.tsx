@@ -14,8 +14,9 @@ export const AutoForm = <T extends object, F, O, C extends string = SupportedInp
   fields,
   updateFn,
   components,
+  formProps,
 }: AutoFormProps<T, F, O, C>) => (
-  <>
+  <div {...formProps}>
     {fields.map(f => {
       const { type, path, condition = () => true, inputProps = {}, ...rest } = f;
       const options = pathOr(undefined, ['inputProps', 'options'], f as Field<T, F, C, O>);
@@ -33,7 +34,7 @@ export const AutoForm = <T extends object, F, O, C extends string = SupportedInp
         />
       ) : null;
     })}
-  </>
+  </div>
 );
 
 export default { AutoForm, customizeInputComponents };
