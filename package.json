@@ -1,9 +1,9 @@
 {
   "name": "@balgamat/react-autoform",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A React component for simple creation of forms to edit any object, that can e.g. serve as the C+U in your CRUD.",
   "author": "Matej Balga",
-  "main": "src/index.ts",
+  "main": "build/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/balgamat/react-autoform.git"
