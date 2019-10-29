@@ -1,34 +1,36 @@
 import React from 'react';
 import { assocPath, pathOr } from 'ramda';
-import { AutoFormProps, FieldWithOptions, InputComponents, SupportedInputs } from './types';
+import { AutoFormProps, ComponentsDictionary, Field, SupportedInputs } from './types';
 import { DEFAULT_INPUT_COMPONENTS } from './InputComponents';
 
 let InputComponents = DEFAULT_INPUT_COMPONENTS;
 
-export const customizeInputComponents = <F, O>(components: InputComponents<F, O>) => {
+export const customizeInputComponents = <C extends string, F>(components: Record<C, F>) => {
   InputComponents = { ...DEFAULT_INPUT_COMPONENTS, ...components };
 };
 
-export const AutoForm = <T extends object>({ o, fields, updateFn }: AutoFormProps<T>) => (
+export const AutoForm = <T extends object, F, O, C extends string = SupportedInputs>({
+  o,
+  fields,
+  updateFn,
+  components,
+}: AutoFormProps<T, F, O, C>) => (
   <>
     {fields.map(f => {
-      const { type, path, label, condition = () => true, ...rest } = f;
-      const options = (f as FieldWithOptions<T, any>).options || undefined;
-      const InputComponent = (InputComponents as InputComponents<T, any>)[f.type || SupportedInputs.Text];
+      const { type, path, condition = () => true, inputProps = {}, ...rest } = f;
+      const options = pathOr(undefined, ['inputProps', 'options'], f as Field<T, F, C, O>);
+      const InputComponent = ({ ...InputComponents, ...components } as ComponentsDictionary<SupportedInputs | C, F>)[
+        f.type || SupportedInputs.Text
+      ];
       return condition(o) ? (
-        <label key={`auto-form-label-${path}`}>
-          {label}
-          {
-            // @ts-ignore
-            <InputComponent
-              id={`auto-form-input-for-${path}`}
-              value={pathOr('', path.split('.'), o)}
-              onChange={(value: any) => updateFn(assocPath(path.split('.'), value, o))}
-              {...rest}
-              options={typeof options === 'function' ? options(o) : options}
-            />
-          }
-        </label>
+        //@ts-ignore
+        <InputComponent
+          key={`auto-form-field-${path}`}
+          value={pathOr('', path.split('.'), o)}
+          onChange={(value: any) => updateFn(assocPath(path.split('.'), value, o))}
+          {...rest}
+          inputProps={{ ...inputProps, options: typeof options === 'function' ? (options as Function)(o) : options }}
+        />
       ) : null;
     })}
   </>

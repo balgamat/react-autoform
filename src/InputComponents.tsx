@@ -1,30 +1,39 @@
 import React from 'react';
-import { InputComponentProps, InputComponents, SelectionInputComponentProps } from './types';
+import { ComponentsDictionary, InputComponentProps, SupportedInputs } from './types';
 
 export const DEFAULT_INPUT_COMPONENTS = {
   text: <P extends InputComponentProps<string>>(props: P) => (
-    <input
-      type={'text'}
-      {...props}
-      onChange={({ target: { value } }: any) => props.onChange(value)}
-      {...props.inputProps}
-    />
+    <label key={`auto-form-label-${props.label}`}>
+      {props.label}
+      <input
+        type={'text'}
+        {...props}
+        onChange={({ target: { value } }: any) => props.onChange(value)}
+        {...props.inputProps}
+      />
+    </label>
   ),
   number: <P extends InputComponentProps<number>>(props: P) => (
-    <input
-      type={'number'}
-      {...props}
-      onChange={({ target: { value } }: any) => props.onChange(value)}
-      {...props.inputProps}
-    />
+    <label key={`auto-form-label-${props.label}`}>
+      {props.label}
+      <input
+        type={'number'}
+        {...props}
+        onChange={({ target: { value } }: any) => props.onChange(value)}
+        {...props.inputProps}
+      />
+    </label>
   ),
-  selectOne: <P extends SelectionInputComponentProps<any, any>>(props: P) => (
-    <select value={props.value} onChange={({ target: { value } }: any) => props.onChange(value)}>
-      {props.options.map(o => (
-        <option key={`option-${props.optionLabelSelector(o)}`} value={o}>
-          {props.optionLabelSelector(o)}
-        </option>
-      ))}
-    </select>
+  select: <P extends InputComponentProps<NonNullable<any>, NonNullable<any>>>(props: P) => (
+    <label key={`auto-form-label-${props.label}`}>
+      {props.label}
+      <select value={props.value} onChange={({ target: { value } }: any) => props.onChange(value)}>
+        {props.inputProps.options.map(o => (
+          <option key={`option-${props.inputProps.optionLabelSelector(o)}`} value={o}>
+            {props.inputProps.optionLabelSelector(o)}
+          </option>
+        ))}
+      </select>
+    </label>
   ),
-} as InputComponents<any, any>;
+} as ComponentsDictionary<SupportedInputs, string | number | NonNullable<any>>;

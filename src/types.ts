@@ -1,53 +1,40 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 
 export type Option<F> = F;
 
-export interface InputComponentProps<F> {
+export interface InputComponentProps<F, O = undefined> {
+  label: string;
   value: F;
   onChange(value: F): void;
-  inputProps?: object;
+  inputProps: O extends NonNullable<any> ? WithOptionsInputProps<F, O, true> & object : object;
 }
-
-export type SelectionInputComponentProps<F, O> = InputComponentProps<F> & { options: Option<O>[] } & Pick<
-    FieldWithOptions<F, O>,
-    'optionLabelSelector' | 'optionEqWhen'
-  >;
 
 export enum SupportedInputs {
   Text = 'text',
   Number = 'number',
-  SelectOne = 'selectOne',
-  SelectMultiple = 'selectMultiple',
+  Select = 'select',
 }
 
-export type InputComponents<F, O> = Partial<
-  { [T in SupportedInputs]: (props: InputComponentProps<F> | SelectionInputComponentProps<F, O>) => React.ReactNode }
-> &
-  Partial<{
-    Text: (props: InputComponentProps<F>) => React.ReactNode;
-    Number: (props: InputComponentProps<F>) => React.ReactNode;
-    SelectOne: (props: SelectionInputComponentProps<F, O>) => React.ReactNode;
-    SelectMultiple: (props: SelectionInputComponentProps<F, O>) => React.ReactNode;
-  }>;
-
-export interface Field<T> {
+export interface Field<T, F, C, O> {
   path: string;
   label: string;
   condition?: (o: T) => boolean;
-  type?: SupportedInputs;
-  inputProps?: object;
+  type?: SupportedInputs | C;
+  inputProps?: InputComponentProps<F, O>['inputProps'];
 }
 
-export interface FieldWithOptions<T, O> extends Field<T> {
-  type: SupportedInputs.SelectOne | SupportedInputs.SelectMultiple;
-  options: ((o: T) => Option<O>[]) | Option<O>[];
+export interface WithOptionsInputProps<T, O, optionsUnwrapped = false> {
+  options: optionsUnwrapped extends false ? ((o: T) => Option<O>[]): Option<O>[];
   optionLabelSelector: (option: O) => NonNullable<React.ReactNode>;
-  optionEqWhen: (a: T[keyof T], b: T[keyof T]) => boolean;
+  optionIdentifierSelector: (option: O) => any;
 }
 
-export interface AutoFormProps<T extends object, O = any> {
+export type ComponentsDictionary<C extends string, F> = Record<C, (props: InputComponentProps<F>) => ReactElement>;
+
+export interface AutoFormProps<T extends object, F, O, C extends string = SupportedInputs> {
   o: T;
-  fields: Array<Field<T> | FieldWithOptions<T, O>>;
+  fields: Array<Field<T, F, C, O>>;
   updateFn(o: T): void;
-  components?: InputComponents<T, O>;
+  components?: ComponentsDictionary<C, F>;
 }
