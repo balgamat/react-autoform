@@ -1,6 +1,6 @@
 import React from 'react';
 import { assocPath, pathOr } from 'ramda';
-import { AutoFormProps, ComponentsDictionary, Field, SupportedInputs } from './types';
+import { AutoFormProps, ComponentsDictionary, Field, SupportedInputs } from '../types';
 import { DEFAULT_INPUT_COMPONENTS } from './InputComponents';
 
 let InputComponents = DEFAULT_INPUT_COMPONENTS;

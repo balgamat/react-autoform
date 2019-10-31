@@ -91,9 +91,7 @@ typings/
 
 build/
 
-.idea/.gitignore
-.idea/jsLibraryMappings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/react-autoform.iml
-.idea/vcs.xml
+.idea/
+
+*.js
+*.js.map

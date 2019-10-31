@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentsDictionary, InputComponentProps, SupportedInputs } from './types';
+import { ComponentsDictionary, InputComponentProps, SupportedInputs } from '../types';
 
 export const DEFAULT_INPUT_COMPONENTS = {
   text: <P extends InputComponentProps<string>>(props: P) => (
