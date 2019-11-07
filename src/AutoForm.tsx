@@ -9,7 +9,12 @@ export const customizeInputComponents = <C extends string, F>(components: Record
   InputComponents = { ...DEFAULT_INPUT_COMPONENTS, ...components };
 };
 
-export const AutoForm = <T extends object, F, O, C extends string = SupportedInputs>({
+export const AutoForm = <
+  T extends object,
+  F extends NonNullable<any>,
+  O extends NonNullable<any>,
+  C extends string = SupportedInputs
+>({
   o,
   fields,
   updateFn,
@@ -27,8 +32,8 @@ export const AutoForm = <T extends object, F, O, C extends string = SupportedInp
         //@ts-ignore
         <InputComponent
           key={`auto-form-field-${path}`}
-          value={pathOr('', path.split('.'), o)}
-          onChange={(value: any) => updateFn(assocPath(path.split('.'), value, o))}
+          value={pathOr('', path === '.' ? [] : path.split('.'), o)}
+          onChange={(value: any) => updateFn(assocPath(path === '.' ? [] : path.split('.'), value, o))}
           {...rest}
           inputProps={{ ...inputProps, options: typeof options === 'function' ? (options as Function)(o) : options }}
         />
