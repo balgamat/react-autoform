@@ -32,10 +32,9 @@ export interface WithOptionsInputProps<T, O, optionsUnwrapped = false> {
 
 export type ComponentsDictionary<C extends string, F> = Record<C, (props: InputComponentProps<F>) => ReactElement>;
 
-export interface AutoFormProps<T extends object, F, O, C extends string = SupportedInputs> {
+export type AutoFormProps<T extends object, F, O, C extends string = SupportedInputs> = {
   o: T;
   fields: Array<Field<T, F, C, O>>;
   updateFn(o: T): void;
   components?: ComponentsDictionary<C, F>;
-  formProps?: object;
-}
+} & object;

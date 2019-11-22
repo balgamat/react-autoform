@@ -19,9 +19,9 @@ export const AutoForm = <
   fields,
   updateFn,
   components,
-  formProps,
+  ...rest
 }: AutoFormProps<T, F, O, C>) => (
-  <div {...formProps}>
+  <div {...rest}>
     {fields.map(f => {
       const { type, path, condition = () => true, inputProps = {}, ...rest } = f;
       const options = pathOr(undefined, ['inputProps', 'options'], f as Field<T, F, C, O>);

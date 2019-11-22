@@ -1,0 +1,6 @@
+.idea
+.
+src/AutoForm.tsx
+src/InputComponents.tsx
+index.ts
+types.ts
