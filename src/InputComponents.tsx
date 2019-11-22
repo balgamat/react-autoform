@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentsDictionary, InputComponentProps, SupportedInputs } from '../types';
 
 export const DEFAULT_INPUT_COMPONENTS = {
-  text: <P extends InputComponentProps<string>>(props: P) => (
+  text: <P extends InputComponentProps<any, string>>(props: P) => (
     <label key={`auto-form-label-${props.label}`}>
       {props.label}
       <input
@@ -13,7 +13,7 @@ export const DEFAULT_INPUT_COMPONENTS = {
       />
     </label>
   ),
-  number: <P extends InputComponentProps<number>>(props: P) => (
+  number: <P extends InputComponentProps<any, number>>(props: P) => (
     <label key={`auto-form-label-${props.label}`}>
       {props.label}
       <input
@@ -36,4 +36,4 @@ export const DEFAULT_INPUT_COMPONENTS = {
       </select>
     </label>
   ),
-} as ComponentsDictionary<SupportedInputs, string | number | NonNullable<any>>;
+} as ComponentsDictionary<any, SupportedInputs, string | number | NonNullable<any>>;

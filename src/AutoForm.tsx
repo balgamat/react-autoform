@@ -25,7 +25,7 @@ export const AutoForm = <
     {fields.map(f => {
       const { type, path, condition = () => true, inputProps = {}, ...rest } = f;
       const options = pathOr(undefined, ['inputProps', 'options'], f as Field<T, F, C, O>);
-      const InputComponent = ({ ...InputComponents, ...components } as ComponentsDictionary<SupportedInputs | C, F>)[
+      const InputComponent = ({ ...InputComponents, ...components } as ComponentsDictionary<T, SupportedInputs | C, F>)[
         f.type || SupportedInputs.Text
       ];
       return condition(o) ? (
