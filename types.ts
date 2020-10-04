@@ -1,13 +1,19 @@
-import * as React from 'react';
 import { ReactElement } from 'react';
 
-export type Option<F> = F;
+type K1<T> = T[keyof T];
+type K2<T> = K1<T>[keyof K1<T>]
+type K3<T> = K2<T>[keyof K2<T>]
+type K4<T> = K3<T>[keyof K3<T>]
+type K5<T> = K4<T>[keyof K4<T>]
+type K6<T> = K5<T>[keyof K5<T>]
 
-export interface InputComponentProps<T, F, O = undefined> {
+export type DeepNestedValueT<T> = K1<T> | K2<T> | K3<T> | K4<T> | K5<T> | K6<T>;
+
+export interface InputComponentProps<T, V = DeepNestedValueT<T>> {
   label: string;
-  value: F;
-  onChange(value: F): void;
-  inputProps: O extends NonNullable<any> ? WithOptionsInputProps<T, O, true> : object;
+  value: V;
+  onChange(value: V): void;
+  [additionalProp: string]: any
 }
 
 export enum SupportedInputs {
@@ -16,27 +22,20 @@ export enum SupportedInputs {
   Select = 'select',
 }
 
-export interface Field<T, F, C, O> {
+export interface Field<T> {
   path: string;
   label: string;
   condition?: (o: T) => boolean;
-  type?: SupportedInputs | C;
-  inputProps?: InputComponentProps<F, O>['inputProps'];
+  type?: string;
+  inputProps?: object;
 }
 
-export interface WithOptionsInputProps<T, O, optionsUnwrapped = false> {
-  options: optionsUnwrapped extends false ? ((o: T) => Option<O>[]) : Option<O>[];
-  optionLabelSelector: (option: O) => NonNullable<React.ReactNode>;
-  optionIdentifierSelector: (option: O) => any;
-  [additionalKey: string]: any;
-}
+export type ComponentsDictionary<T> = Record<string, (props: InputComponentProps<T>) => ReactElement>;
 
-export type ComponentsDictionary<T, C extends string, F> = Record<C, (props: InputComponentProps<T, F>) => ReactElement>;
-
-export type AutoFormProps<T extends object = any, F = any, O = any, C extends string = SupportedInputs> = {
+export type AutoFormProps<T> = {
   o: T;
-  fields: Array<Field<T, F, C, O>>;
+  fields: Array<Field<T>>;
   updateFn(o: T): void;
-  components?: ComponentsDictionary<T, C, F>;
-  [additionalKey: string]: any
+  components?: ComponentsDictionary<T>;
+  [additionalProp: string]: any
 };

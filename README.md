@@ -37,7 +37,7 @@ const [editedCup, editCup] = useState(CUP);
     o={editedCup}
     updateFn={editCup} 
     fields={[
-        { label: 'What is in the cup?', path: 'contains', type: SupportedInputs.Number },
+        { label: 'What is in the cup?', path: 'contains', type: SupportedInputs.Text },
         { label: 'Volume', path: 'volume.value', type: SupportedInputs.Number },
         {
             label: 'Unit',
