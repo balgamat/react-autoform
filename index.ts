@@ -1,22 +1,23 @@
-import { AutoForm, customizeInputComponents } from './src/AutoForm';
+import { Autoform } from './src/Autoform';
 import {
   ComponentsDictionary,
-  AutoFormProps,
-  WithOptionsInputProps,
+  AutoformProps,
   Field,
   SupportedInputs,
   InputComponentProps,
 } from './types';
+import { customizeInputComponents } from './src/InputComponents';
+import { validation } from './src/validation';
+import { useAutoform } from './src/useAutoform';
 
 export {
-  AutoForm,
-  AutoFormProps,
+  Autoform,
+  AutoformProps,
   ComponentsDictionary,
   customizeInputComponents,
   Field,
   InputComponentProps,
   SupportedInputs,
-  WithOptionsInputProps,
+  useAutoform,
+  validation,
 };
-
-export default AutoForm;

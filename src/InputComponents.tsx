@@ -1,39 +1,54 @@
 import React from 'react';
-import { ComponentsDictionary, InputComponentProps, SupportedInputs } from '../types';
+import { ComponentsDictionary } from '../types';
 
 export const DEFAULT_INPUT_COMPONENTS = {
-  text: <P extends InputComponentProps<any, string>>(props: P) => (
-    <label key={`auto-form-label-${props.label}`}>
-      {props.label}
+  text: ({ label, onChange, value, ...rest }) => (
+    <label
+      key={`autoform-label-${label}`}
+      className={`autoform autoform-label autoform-label-${label}`}
+    >
+      {label}
       <input
+        className={`autoform autoform-input autoform-text-input autoform-text-input-${label}`}
         type={'text'}
-        {...props}
-        onChange={({ target: { value } }: any) => props.onChange(value)}
-        {...props.inputProps}
+        onChange={({ target: { value } }: any) => onChange(value)}
+        {...rest}
       />
     </label>
   ),
-  number: <P extends InputComponentProps<any, number>>(props: P) => (
-    <label key={`auto-form-label-${props.label}`}>
-      {props.label}
+  number: ({ label, onChange, value, ...rest }) => (
+    <label
+      key={`autoform-label-${label}`}
+      className={`autoform autoform-label autoform-label-${label}`}
+    >
+      {label}
       <input
+        className={`autoform autoform-input autoform-number-input autoform-number-input-${label}`}
         type={'number'}
-        {...props}
-        onChange={({ target: { value } }: any) => props.onChange(value)}
-        {...props.inputProps}
+        onChange={({ target: { value } }: any) => onChange(value)}
+        {...rest}
       />
     </label>
   ),
-  select: <P extends InputComponentProps<NonNullable<any>, NonNullable<any>>>(props: P) => (
-    <label key={`auto-form-label-${props.label}`}>
-      {props.label}
-      <select value={props.value} onChange={({ target: { value } }: any) => props.onChange(value)}>
-        {props.inputProps.options.map(o => (
-          <option key={`option-${props.inputProps.optionLabelSelector(o)}`} value={o}>
-            {props.inputProps.optionLabelSelector(o)}
+  select: ({ label, onChange, value, options, optionLabelSelector, ...rest }) => (
+    <label
+      key={`autoform-label-${label}`}
+      className={`autoform autoform-label autoform-label-${label}`}
+    >
+      {label}
+      <select value={value} onChange={({ target: { value } }: any) => onChange(value)}>
+        {options.map((o: any) => (
+          <option key={`option-${optionLabelSelector(o)}`} value={o}>
+            {optionLabelSelector(o)}
           </option>
         ))}
       </select>
     </label>
   ),
-} as ComponentsDictionary<any, SupportedInputs, string | number | NonNullable<any>>;
+} as ComponentsDictionary<any>;
+
+
+export let InputComponents = DEFAULT_INPUT_COMPONENTS;
+export const customizeInputComponents = <T, >(components: ComponentsDictionary<T>) => {
+  InputComponents = { ...DEFAULT_INPUT_COMPONENTS, ...components };
+};
