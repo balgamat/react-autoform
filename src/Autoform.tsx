@@ -1,45 +1,49 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { assocPath, pathOr } from 'ramda';
-import { AutoFormProps, ComponentsDictionary, Field, SupportedInputs } from '../types';
-import { DEFAULT_INPUT_COMPONENTS } from './InputComponents';
+import { InputComponents } from './InputComponents';
+import { AutoformProps, InputComponentProps, SupportedInputs } from '../types';
+import { prepareComputedProps } from './prepareComputedProps';
 
-let InputComponents = DEFAULT_INPUT_COMPONENTS;
-
-export const customizeInputComponents = <C extends string, F>(components: Record<C, F>) => {
-  InputComponents = { ...DEFAULT_INPUT_COMPONENTS, ...components };
-};
-
-export const AutoForm = <
-  T extends object,
-  F extends NonNullable<any>,
-  O extends NonNullable<any>,
-  C extends string = SupportedInputs
->({
-  o,
-  fields,
-  updateFn,
-  components,
-  ...rest
-}: AutoFormProps<T, F, O, C>) => (
-  <div {...rest}>
+export const Autoform = <T,>({ o, fields, updateFn, components, ...rest }: AutoformProps<T>) => (
+  <div className={`autoform`} {...rest}>
     {fields.map(f => {
-      const { type, path, condition = () => true, inputProps = {}, ...rest } = f;
-      const options = pathOr(undefined, ['inputProps', 'options'], f as Field<T, F, C, O>);
-      const InputComponent = ({ ...InputComponents, ...components } as ComponentsDictionary<T, SupportedInputs | C, F>)[
-        f.type || SupportedInputs.Text
-      ];
+      const { type, path, condition = () => true, ...rest } = f;
+
+      const InputComponent: FC<InputComponentProps<T>> | undefined = pathOr(
+        undefined,
+        [f.type || SupportedInputs.Text],
+        {
+          ...InputComponents,
+          ...components,
+        },
+      );
+
+      if (!InputComponent)
+        throw new Error(
+          `Autoform has encountered an invalid input type: ${f.type}\n.: ${JSON.stringify(o)}`,
+        );
+
+      const value = pathOr(undefined, path === '.' ? [] : path.split('.'), o);
+      if (!value)
+        throw new Error(
+          `Autoform has encountered an invalid path: ${path}\n\nSearched object: ${JSON.stringify(
+            o,
+          )}`,
+        );
+
+      const inputProps = prepareComputedProps(o, rest);
+
       return condition(o) ? (
-        //@ts-ignore
+        // @ts-ignore
         <InputComponent
-          key={`auto-form-field-${path}`}
-          value={pathOr('', path === '.' ? [] : path.split('.'), o)}
-          onChange={(value: any) => updateFn(assocPath(path === '.' ? [] : path.split('.'), value, o))}
-          {...rest}
-          inputProps={{ ...inputProps, options: typeof options === 'function' ? (options as Function)(o) : options }}
+          key={`autoform-field-${path}`}
+          value={value}
+          onChange={(value: any) =>
+            updateFn(assocPath(path === '.' ? [] : path.split('.'), value, o))
+          }
+          {...inputProps}
         />
       ) : null;
     })}
   </div>
 );
-
-export default { AutoForm, customizeInputComponents };
