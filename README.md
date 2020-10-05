@@ -10,26 +10,29 @@ components that will be used in the form. The autoform then handles changing of 
 object back to you. Well, enough chitchat, let's see how to use it...
 
 ## Installation
-
-###**Starting from version 6, _react-autoform_ is no longer on npm as `@balgamat/react-autoform` but as [@autoform/core](https://www.npmjs.com/package/@autoform/core) instead!**
-
 Install the base package with:
 
-`yarn add @autoform/core`
+`yarn add @balgamat/react-autoform`
 
 If you wish to use my component libraries, you can also install those, e.g.:
 
-`yarn add @autoform/fluent-ui`
+`@balgamat/react-autoform-fluent-ui`
 
 and then
 
 ```$typescript
-import * as FluentUIComponents from '@autoform/fluent-ui';
-import { customizeInputComponents } from '@autoform/core';
+import * as FluentUIComponents from '@balgamat/react-autoform-fluent-ui';
+import { customizeInputComponents } from '@balgamat/react-autoform';
 
 customizeInputComponents(FluentUIComponents);
 ```
 
+### Available UI kits
+* [Fluent UI](https://www.npmjs.com/package/@balgamat/react-autoform-fluent-ui) `@balgamat/react-autoform-fluent-ui`
+* Blueprint _in progress_
+* Material UI _coming soon_
+
+want _SemanticUI, Grommet, Bootstrap_ or something completely different? File an issue or open a PR - collaborators are more than welcome :)
 
 ## Getting started
 
