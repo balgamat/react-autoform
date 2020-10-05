@@ -9,6 +9,28 @@ unopinionated as possible, meaning that is completely up to you to decide the st
 components that will be used in the form. The autoform then handles changing of the values and delivering the modified
 object back to you. Well, enough chitchat, let's see how to use it...
 
+## Installation
+
+###**Starting from version 6, _react-autoform_ is no longer on npm as `@balgamat/react-autoform` but as [@autoform/core](https://www.npmjs.com/package/@autoform/core) instead!**
+
+Install the base package with:
+
+`yarn add @autoform/core`
+
+If you wish to use my component libraries, you can also install those, e.g.:
+
+`yarn add @autoform/fluent-ui`
+
+and then
+
+```$typescript
+import * as FluentUIComponents from '@autoform/fluent-ui';
+import { customizeInputComponents } from '@autoform/core';
+
+customizeInputComponents(FluentUIComponents);
+```
+
+
 ## Getting started
 
 Although you are more than welcome (and encouraged, in fact) to provide your own components, Autoform comes with three
