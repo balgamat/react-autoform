@@ -1,6 +1,6 @@
 {
   "name": "@balgamat/react-autoform",
-  "version": "6.1.8",
+  "version": "6.1.9",
   "description": "A React component for simple creation of forms to edit any object, that can e.g. serve as the C+U in your CRUD.",
   "author": "Matej Balga",
   "main": "dist/index.js",
@@ -44,7 +44,7 @@
     "ts-jest": "^26.4.1",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.6.4"
+    "typescript": "^4.0.3"
   },
   "dependencies": {
     "ramda": "^0.26.1",
