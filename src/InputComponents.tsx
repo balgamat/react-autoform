@@ -30,7 +30,7 @@ export const DEFAULT_INPUT_COMPONENTS = {
       />
     </label>
   ),
-  select: ({ label, onChange, value, options, optionLabelSelector, ...rest }) => (
+  select: ({ label, onChange, value, options, labelExtractor, keyExtractor, ...rest }) => (
     <label
       key={`autoform-label-${label}`}
       className={`autoform autoform-label autoform-label-${label}`}
@@ -38,8 +38,8 @@ export const DEFAULT_INPUT_COMPONENTS = {
       {label}
       <select value={value} onChange={({ target: { value } }: any) => onChange(value)}>
         {options.map((o: any) => (
-          <option key={`option-${optionLabelSelector(o)}`} value={o}>
-            {optionLabelSelector(o)}
+          <option key={`option-${labelExtractor(o)}`} value={o}>
+            {labelExtractor(o)}
           </option>
         ))}
       </select>
@@ -48,14 +48,14 @@ export const DEFAULT_INPUT_COMPONENTS = {
   Component: ({ Component }) => {
     if (!Component)
       throw new Error(
-        'Found a `component` type Autoform element without a React component as its prop.',
+        'Found a `component` type Autoform element without a `Component` as its prop.',
       );
 
     return Component;
   },
-} as ComponentsDictionary<any>;
+} as ComponentsDictionary;
 
 export let InputComponents = DEFAULT_INPUT_COMPONENTS;
-export const customizeInputComponents = <T,>(components: ComponentsDictionary<T>) => {
-  InputComponents = { ...DEFAULT_INPUT_COMPONENTS, ...components };
+export const customizeInputComponents = <T,>(components: ComponentsDictionary) => {
+  InputComponents = { ...components, ...DEFAULT_INPUT_COMPONENTS };
 };

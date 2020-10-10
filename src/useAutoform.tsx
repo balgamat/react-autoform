@@ -1,4 +1,4 @@
-import { ComponentsDictionary, Field, SupportedInputs, ValidationResult } from '../types';
+import { ComponentsDictionary, Field, ValidationResult } from '../types';
 import React, { FC, useEffect, useState } from 'react';
 import { Autoform } from './Autoform';
 import { createValidationSchema, validation } from './validation';
@@ -7,7 +7,7 @@ import { ValidationError } from 'yup';
 export const useAutoform = <T,>(
   onObject: T,
   withFields: Array<Field<T>>,
-  andOptions: { components?: ComponentsDictionary<T>; [additionalProp: string]: any } = {},
+  andOptions: { components?: ComponentsDictionary; [additionalProp: string]: any } = {},
 ): [T, FC, ValidationResult] => {
   const [o, updateFn] = useState(onObject);
   const [validationResult, setValidationResult] = useState<ValidationResult>({
