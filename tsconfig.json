@@ -8,11 +8,11 @@
     "target": "es5",
     "sourceMap": true,
     "declaration": true,
-    "outDir": ".",
+    "outDir": "./dist",
     "strict": true,
     "jsx": "react",
     "esModuleInterop": true
   },
-  "include": ["index.ts", "src"],
-  "exclude": ["node_modules"]
+  "include": ["index.ts", "types.ts", "src"],
+  "exclude": ["node_modules", "tests"]
 }

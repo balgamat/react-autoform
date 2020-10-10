@@ -1,5 +1,5 @@
 import { ComponentsDictionary, Field, ValidationResult } from '../types';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { Autoform } from './Autoform';
 import { createValidationSchema, validation } from './validation';
 import { ValidationError } from 'yup';
@@ -8,7 +8,7 @@ export const useAutoform = <T,>(
   onObject: T,
   withFields: Array<Field<T>>,
   andOptions: { components?: ComponentsDictionary; [additionalProp: string]: any } = {},
-): [T, FC, ValidationResult] => {
+): [T, ReactElement, ValidationResult] => {
   const [o, updateFn] = useState(onObject);
   const [validationResult, setValidationResult] = useState<ValidationResult>({
     valid: true,
@@ -22,8 +22,9 @@ export const useAutoform = <T,>(
       .then(() => setValidationResult({ valid: true }))
       .catch((error: ValidationError) => setValidationResult({ valid: false, error }));
   }, [o]);
-
-  const Component: FC = () => <Autoform {...{ o, updateFn, fields: withFields, ...andOptions }} />;
-
-  return [o, Component, validationResult];
+  return [
+    o,
+    <Autoform {...{ o, updateFn, fields: withFields, ...andOptions }} />,
+    validationResult,
+  ];
 };

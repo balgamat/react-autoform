@@ -25,13 +25,6 @@ export const Autoform = <T,>({ o, fields, updateFn, components, ...rest }: Autof
         );
 
       const value = pathOr(undefined, path === '.' ? [] : path.split('.'), o);
-      if (!value)
-        throw new Error(
-          `Autoform has encountered an invalid path: ${path}\n\nSearched object: ${JSON.stringify(
-            o,
-          )}`,
-        );
-
       const inputProps = prepareComputedProps(o, rest);
 
       return condition(o)

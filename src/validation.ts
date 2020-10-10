@@ -1,8 +1,8 @@
 import * as validation from 'yup';
 import { Field } from '../types';
-import { Schema } from 'yup';
+import { ObjectSchemaDefinition, Schema, ObjectSchema } from 'yup';
 import { setLocale } from 'yup';
-import { assocPath, isEmpty } from 'ramda';
+import { assocPath, all, prop, is, map, find } from 'ramda';
 
 setLocale({
   mixed: {
@@ -15,16 +15,21 @@ setLocale({
 });
 
 export const createValidationSchema = <T>(fields: Array<Field<T>>): Schema<any> => {
-  const shape = fields.reduce(
-    (acc, field) => assocPath(field.path.split('.'), field.validation, acc),
-    {},
-  );
-
-  if (isEmpty(shape)) {
+  if (all((f: Field<T>) => !prop('validation', f))(fields)) {
     return validation.mixed();
   }
 
-  return validation.object().shape(shape);
+  const structure = fields.reduce((acc, field) => {
+    if (!field.validation) return acc;
+    return assocPath(field.path.split('.'), () => field.validation, acc);
+  }, {});
+
+  const createObjectShape = (structure: any): any => {
+    if (is(Function, structure)) return structure();
+    return validation.object().shape(map(createObjectShape, structure) as any);
+  };
+
+  return createObjectShape(structure);
 };
 
 export { validation };

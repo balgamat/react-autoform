@@ -7,8 +7,9 @@ export const prepareComputedProps = <P>(o: any, props: P) =>
       (acc, k: string) =>
         assoc(
           k,
-          is(Function, props[k as keyof P])
-            ? ((props[k as keyof P] as unknown) as Function)(o)
+          (props[k as keyof P] as any)['$fn'] !== undefined &&
+            is(Function, (props[k as keyof P] as any)['$fn'])
+            ? (((props[k as keyof P] as any)['$fn'] as unknown) as Function)(o)
             : props[k as keyof P],
         )(acc),
       {},

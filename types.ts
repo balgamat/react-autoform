@@ -10,7 +10,7 @@ type K6<T> = K5<T>[keyof K5<T>];
 
 export type DeepNestedValueT<T> = K1<T> | K2<T> | K3<T> | K4<T> | K5<T> | K6<T> | T;
 
-export interface InputComponentProps<T, V = DeepNestedValueT<T>> {
+export interface InputComponentProps<V = any> {
   label: string;
   value: V;
 
@@ -36,13 +36,15 @@ export interface Field<T> {
 
 export type InputComponent<T> = FC<InputComponentProps<T>>;
 
-export type ComponentsDictionary<T> = Record<string, InputComponent<T>>;
+export type ComponentsDictionaryGeneric<K extends InputComponentProps> = Record<string, FC<K>>;
+
+export type ComponentsDictionary = ComponentsDictionaryGeneric<InputComponentProps>;
 
 export type AutoformProps<T> = {
   o: T;
   fields: Array<Field<T>>;
   updateFn(o: T): void;
-  components?: ComponentsDictionary<T>;
+  components?: ComponentsDictionary;
   [additionalProp: string]: any;
 };
 
@@ -54,7 +56,7 @@ export interface ValidationResult {
 export type AutoformHookParams<T> = [
   T,
   Array<Field<T>>,
-  { components?: ComponentsDictionary<T>; [additionalProp: string]: any }?,
+  { components?: ComponentsDictionary; [additionalProp: string]: any }?,
 ];
 
 export interface AutoformHook<T> {
