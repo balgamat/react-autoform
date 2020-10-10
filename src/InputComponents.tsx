@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentsDictionary } from '../types';
+import { ComponentsDictionary, InputComponentProps } from '../types';
 
 export const DEFAULT_INPUT_COMPONENTS = {
   text: ({ label, onChange, value, ...rest }) => (
@@ -45,10 +45,17 @@ export const DEFAULT_INPUT_COMPONENTS = {
       </select>
     </label>
   ),
+  Component: ({ Component }) => {
+    if (!Component)
+      throw new Error(
+        'Found a `component` type Autoform element without a React component as its prop.',
+      );
+
+    return Component;
+  },
 } as ComponentsDictionary<any>;
 
-
 export let InputComponents = DEFAULT_INPUT_COMPONENTS;
-export const customizeInputComponents = <T, >(components: ComponentsDictionary<T>) => {
+export const customizeInputComponents = <T,>(components: ComponentsDictionary<T>) => {
   InputComponents = { ...DEFAULT_INPUT_COMPONENTS, ...components };
 };

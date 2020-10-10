@@ -1,6 +1,6 @@
 # React Autoform
 
-_A Simple React component for simple creation of forms to edit any object, that can e.g. serve as the C+U in your CRUD._
+_A React component for simple creation of forms to edit any object, that can e.g. serve as the C+U in your CRUD._
 
 ## Description
 

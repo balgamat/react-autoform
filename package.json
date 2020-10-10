@@ -1,6 +1,6 @@
 {
   "name": "@balgamat/react-autoform",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "description": "A React component for simple creation of forms to edit any object, that can e.g. serve as the C+U in your CRUD.",
   "author": "Matej Balga",
   "main": "index.js",
@@ -17,7 +17,7 @@
     "prepare": "yarn build",
     "lint": "tslint -p tsconfig.json"
   },
-  "homepage": "https://github.com/balgamat/react-autoform.git#readme",
+  "homepage": "https://balgamat.github.io/react-autoform/",
   "license": "GPL-3.0",
   "keywords": [
     "react-component",
