@@ -1,8 +1,7 @@
 import * as validation from 'yup';
+import { Schema, setLocale } from 'yup';
 import { Field } from '../types';
-import { ObjectSchemaDefinition, Schema, ObjectSchema } from 'yup';
-import { setLocale } from 'yup';
-import { assocPath, all, prop, is, map, find } from 'ramda';
+import { all, assocPath, is, map, prop } from 'ramda';
 
 setLocale({
   mixed: {

@@ -3,8 +3,12 @@ import {
   ComponentsDictionary,
   AutoformProps,
   Field,
-  SupportedInputs,
+  BasicInput,
   InputComponentProps,
+  ValidationResult,
+  AutoformHookParams,
+  AutoformHookReturnValue,
+  AutoformHook,
 } from './types';
 import { customizeInputComponents } from './src/InputComponents';
 import { validation } from './src/validation';
@@ -12,12 +16,16 @@ import { useAutoform } from './src/useAutoform';
 
 export {
   Autoform,
+  AutoformHook,
+  AutoformHookParams,
+  AutoformHookReturnValue,
   AutoformProps,
+  BasicInput,
   ComponentsDictionary,
   customizeInputComponents,
   Field,
   InputComponentProps,
-  SupportedInputs,
   useAutoform,
   validation,
+  ValidationResult,
 };

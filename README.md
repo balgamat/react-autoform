@@ -38,13 +38,14 @@ want _SemanticUI, Grommet, Bootstrap_ or something completely different? File an
 
 ## Getting started
 
-Although you are more than welcome (and encouraged, in fact) to provide your own components, Autoform comes with three
+Although you are more than welcome (and encouraged, in fact) to provide your own components, Autoform comes with five
 input types you can use out-of-the-box to get you started. Those are:
 
-- `SupportedInputs.Text` (this is the default type)
-- `SupportedInputs.Number`
-- `SupportedInputs.Select`
-- `Component` (special type to inject any Component you'd like between the fields - e.g. a heading or a separator)
+- `BasicInput.Text` (this is the default type)
+- `BasicInput.Number`
+- `BasicInput.Select`
+- `BasicInput.Hidden` (do not show this field in the form)
+- `BasicInput.Component` (special type to inject any Component you'd like between the fields - e.g. a heading or a separator)
 
 Now, let's say you have an object like this:
 
@@ -60,8 +61,8 @@ const CUP = {
 
 To edit this fella, you simply use the `useAutoform()` hook as follows:
 
-```typescript
-import { useAutoform, validation } from 'react-autoform';
+```typescript jsx
+import { useAutoform, validation, BasicInputs } from '@balgamat/react-autoform';
 
 const fields = [
   {
@@ -72,19 +73,19 @@ const fields = [
   {
     label: 'Volume',
     path: 'volume.value',
-    type: SupportedInputs.Number,
+    type: BasicInputs.Number,
     validation: validation.number().max(1000),
   },
   {
     label: 'Unit',
     path: 'volume.unit',
-    type: SupportedInputs.Select,
+    type: BasicInputs.Select,
     options: [{ data: 'ml', label: 'Millilitres' }, { data: 'oz', label: 'Ounces' }],
     validation: validation.string().required(),
   },
 ];
 
-const [editedCup, form, validationResult] = useAutoform(CUP, fields);
+const [editedCup, form, validationResult] = useAutoform({ onObject: CUP, withFields: fields });
 ...
 // Now, you can place the component wherever you see fit:
 <div>{form}</div>

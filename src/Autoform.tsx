@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { assocPath, pathOr } from 'ramda';
 import { InputComponents } from './InputComponents';
-import { AutoformProps, InputComponentProps, SupportedInputs } from '../types';
+import { AutoformProps, InputComponentProps, BasicInput } from '../types';
 import { prepareComputedProps } from './prepareComputedProps';
 
 export const Autoform = <T,>({ o, fields, updateFn, components, ...rest }: AutoformProps<T>) => (
@@ -9,9 +9,11 @@ export const Autoform = <T,>({ o, fields, updateFn, components, ...rest }: Autof
     {fields.map((f) => {
       const { type, path, condition = () => true, ...rest } = f;
 
+      if (type === BasicInput.Hidden) return null;
+
       const InputComponent: FC<InputComponentProps<T>> | undefined = pathOr(
         undefined,
-        [f.type || SupportedInputs.Text],
+        [f.type || BasicInput.Text],
         {
           ...InputComponents,
           ...components,

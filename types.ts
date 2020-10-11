@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactElement } from 'react';
 import { Schema, ValidationError } from 'yup';
 
 type K1<T> = T[keyof T];
@@ -19,10 +19,12 @@ export interface InputComponentProps<V = any> {
   [additionalProp: string]: any;
 }
 
-export enum SupportedInputs {
-  Text = 'text',
+export enum BasicInput {
+  Component = 'Component',
+  Hidden = 'hidden',
   Number = 'number',
   Select = 'select',
+  Text = 'text',
 }
 
 export interface Field<T> {
@@ -53,12 +55,14 @@ export interface ValidationResult {
   error?: ValidationError;
 }
 
-export type AutoformHookParams<T> = [
-  T,
-  Array<Field<T>>,
-  { components?: ComponentsDictionary; [additionalProp: string]: any }?,
-];
+export type AutoformHookParams<T> = {
+  onObject?: T;
+  withFields: Array<Field<T>>;
+  andOptions?: { components?: ComponentsDictionary; [additionalProp: string]: any };
+};
+
+export type AutoformHookReturnValue<T> = [T, ReactElement, ValidationResult];
 
 export interface AutoformHook<T> {
-  (...params: AutoformHookParams<T>): [T, FC, ValidationResult];
+  (params: AutoformHookParams<T>): AutoformHookReturnValue<T>;
 }
