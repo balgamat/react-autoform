@@ -1,0 +1,42 @@
+{
+  "BLUEPRINT": {
+    "SELECT": "Vyberte ...",
+    "NOTHING_FOUND": "Nic nenalezeno.",
+    "SEARCH": "Vyhledat...",
+    "BROWSE": " ... ",
+    "CHOOSE_IMAGE": "Vyberte obrázek...",
+    "CHOOSE_FILE": "Vyberte soubor..."
+  },
+  "VALIDATION": {
+    "FIELD_INVALID": "Pole je v nesprávném formátu",
+    "FIELD_REQUIRED": "Toto pole je povinné",
+    "ONE_OF": "Hodnota musí být jednou z těchto možností: {{values}}",
+    "NOT_ONE_OF": "Hodnota nesmí být jednou z těchto možností: {{values}}",
+    "NOT_TYPE": "Hodnota má nesprávný typ",
+
+    "INVALID_LENGTH": "Text musí být dlouhý přesně {{length}} znaků",
+    "MIN_LENGTH": "Text musí být dlouhý minimálně {{length}} znaků",
+    "MAX_LENGTH": "Text musí být dlouhý maximálně {{length}} znaků",
+    "MATCHES": "Text neodpovídá očekávánemu formátu: {{regex}}",
+    "NOT_EMAIL": "Neplatná emailová adresa",
+    "NOT_URL": "Neplatná URL",
+    "NOT_UUID": "Neplatné UUID",
+    "TRIM": "Text obsahuje mezery",
+    "LOWERCASE": "Povolena jsou pouze malá písmena",
+    "UPPERCASE": "Povolena jsou pouze velká písmena",
+
+    "NUMBER_TOO_SMALL": "Číslo je moc nízké, minimální hodnota je {{min}}",
+    "NUMBER_TOO_BIG": "Číslo je moc vysoké, maximální hodnota je {{max}}",
+    "LESS_THAN": "Číslo musí být menší než {{less}}",
+    "MORE_THAN": "Číslo musí být větší než {{more}}",
+    "POSITIVE": "Povolena jsou pouze kladná čísla",
+    "NEGATIVE": "Povolena jsou pouze záporná čísla",
+    "INTEGER": "Povoleny jsou pouze celočíselné hodnoty",
+
+    "DATE_MIN": "Datum musí být po {{min}}",
+    "DATE_MAX": "Datum musí být před {{max}}",
+
+    "ARRAY_MIN": "Musí být specifikováno minimálně {{min}} položek",
+    "ARRAY": "M§že být specifikováno maximálně {{max}} položek"
+  }
+}

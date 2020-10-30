@@ -1,5 +1,5 @@
 import { FC, ReactElement } from 'react';
-import { Schema, ValidationError } from 'yup';
+import { Schema, ValidationError } from 'joi';
 
 type K1<T> = T[keyof T];
 type K2<T> = K1<T>[keyof K1<T>];
@@ -13,7 +13,8 @@ export type DeepNestedValueT<T> = K1<T> | K2<T> | K3<T> | K4<T> | K5<T> | K6<T> 
 export interface InputComponentProps<V = any> {
   label: string;
   value: V;
-
+  error?: string;
+  customError?: string;
   onChange(value: V): void;
 
   [additionalProp: string]: any;
@@ -32,7 +33,7 @@ export interface Field<T> {
   label: string;
   condition?: (o: T) => boolean;
   type?: string;
-  validation?: Schema<any>;
+  validation?: Schema;
   [additionalProp: string]: any;
 }
 
@@ -47,6 +48,7 @@ export type AutoformProps<T> = {
   fields: Array<Field<T>>;
   updateFn(o: T): void;
   components?: ComponentsDictionary;
+  handleValidationResult?(result: ValidationResult): void;
   [additionalProp: string]: any;
 };
 
@@ -58,7 +60,11 @@ export interface ValidationResult {
 export type AutoformHookParams<T> = {
   onObject?: T;
   withFields: Array<Field<T>>;
-  andOptions?: { components?: ComponentsDictionary; [additionalProp: string]: any };
+  andOptions?: {
+    components?: ComponentsDictionary;
+    handleValidationResult?(result: ValidationResult): void;
+    [additionalProp: string]: any;
+  };
 };
 
 export type AutoformHookReturnValue<T> = [T, ReactElement, ValidationResult];

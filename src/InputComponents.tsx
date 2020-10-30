@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentsDictionary, InputComponentProps } from '../types';
+import { ComponentsDictionary } from '../types';
 
 export const DEFAULT_INPUT_COMPONENTS = {
   text: ({ label, onChange, value, ...rest }) => (

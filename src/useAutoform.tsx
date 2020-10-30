@@ -1,8 +1,7 @@
-import { AutoformHookParams, ValidationResult } from '../types';
-import React, { ReactElement, useEffect, useState } from 'react';
+import { AutoformHookParams } from '../types';
+import React, { ReactElement, useState } from 'react';
 import { Autoform } from './Autoform';
-import { createValidationSchema } from './validation';
-import { ValidationError } from 'yup';
+import { ValidationResult } from '../types';
 
 export const useAutoform = <T,>({
   onObject = {} as T,
@@ -10,26 +9,25 @@ export const useAutoform = <T,>({
   andOptions = {},
 }: AutoformHookParams<T>): [T, ReactElement, ValidationResult] => {
   const [o, updateFn] = useState(onObject);
+
   const [validationResult, setValidationResult] = useState<ValidationResult>({
     valid: true,
   });
 
-  const schema = createValidationSchema(withFields);
-
-  useEffect(() => {
-    updateFn(schema.cast(onObject));
-  }, []);
-
-  useEffect(() => {
-    schema
-      .validate(o)
-      .then(() => setValidationResult({ valid: true }))
-      .catch((error: ValidationError) => setValidationResult({ valid: false, error }));
-  }, [o]);
-
   return [
     o,
-    <Autoform {...{ o, updateFn, fields: withFields, ...andOptions }} />,
+    <Autoform
+      {...{
+        o,
+        updateFn,
+        fields: withFields,
+        ...andOptions,
+        handleValidationResult: (res) => {
+          setValidationResult(res);
+          andOptions?.handleValidationResult && andOptions?.handleValidationResult(res);
+        },
+      }}
+    />,
     validationResult,
   ];
 };
