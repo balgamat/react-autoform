@@ -1,4 +1,4 @@
-import { Autoform } from './src/Autoform';
+import { Autoform, AutoformTranslation } from './src/Autoform';
 import {
   ComponentsDictionary,
   AutoformProps,
@@ -20,6 +20,7 @@ export {
   AutoformHookParams,
   AutoformHookReturnValue,
   AutoformProps,
+  AutoformTranslation,
   BasicInput,
   ComponentsDictionary,
   customizeInputComponents,

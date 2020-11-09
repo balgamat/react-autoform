@@ -53,7 +53,6 @@
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
-    "joi": "^17.3.0",
     "joi-json": "^4.0.0",
     "ramda": "^0.26.1"
   },

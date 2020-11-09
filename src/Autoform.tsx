@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
-import { assoc, assocPath, find, pathOr, propEq } from 'ramda';
+import { assocPath, find, pathOr, propEq } from 'ramda';
 import { InputComponents } from './InputComponents';
-import { AutoformProps, InputComponentProps, BasicInput, ValidationResult } from '../types';
+import { AutoformProps, BasicInput, InputComponentProps, ValidationResult } from '../types';
 import { prepareComputedProps } from './prepareComputedProps';
-import { createValidationSchema, defineLocale } from './validation';
-import { ValidationError } from 'yup';
-import { useTranslation } from 'react-i18next';
+import { createValidationSchema } from './validation';
+import { ValidationError } from 'joi';
+
+export const AutoformTranslation = React.createContext((key: string, options: any) => key);
 
 export const Autoform = <T,>({
   o,
@@ -15,15 +16,10 @@ export const Autoform = <T,>({
   handleValidationResult,
   ...rest
 }: AutoformProps<T>) => {
-  const { t } = useTranslation('autoform');
+  const t = rest.translationFunction || (() => {});
   const [validationResult, setValidationResult] = useState<ValidationResult>({
     valid: true,
   });
-
-  defineLocale(
-    t,
-    fields.reduce((acc, val) => assoc(val.path, val.label, acc), {}),
-  );
 
   const schema = createValidationSchema(fields);
 
@@ -40,50 +36,58 @@ export const Autoform = <T,>({
       });
   }, [o]);
 
-  console.log(validationResult);
-
   return (
-    <div className={`autoform`} {...rest}>
-      {fields.map((f) => {
-        const { type, path, condition = () => true, ...rest } = f;
+    <AutoformTranslation.Provider value={t}>
+      <div className={`autoform`} {...rest}>
+        {fields.map((f) => {
+          const { type, path, condition = () => true, ...rest } = f;
 
-        const errorDetails = find(
-          propEq('path', f.path.split('.')),
-          validationResult.error?.details || [],
-        );
-        const error = errorDetails ? errorDetails.message : undefined;
+          const errorDetails = find(
+            propEq('path', f.path.split('.')),
+            validationResult.error?.details || [],
+          );
+          const error = errorDetails
+            ? t(`VALIDATION.${errorDetails.type.toUpperCase()}`, {
+                ...errorDetails.context,
+                label: f.label,
+                ref: errorDetails.context?.ref
+                  ? find(propEq('path', f.path.split('.')), errorDetails.context.ref).label
+                  : undefined,
+              })
+            : undefined;
 
-        if (type === BasicInput.Hidden) return null;
+          if (type === BasicInput.Hidden) return null;
 
-        const InputComponent: FC<InputComponentProps<T>> | undefined = pathOr(
-          undefined,
-          [f.type || BasicInput.Text],
-          {
-            ...InputComponents,
-            ...components,
-          },
-        );
-
-        if (!InputComponent)
-          throw new Error(
-            `Autoform has encountered an invalid input type: ${f.type}.\n
-            Available types are: ${Object.keys(InputComponents)}`,
+          const InputComponent: FC<InputComponentProps<T>> | undefined = pathOr(
+            undefined,
+            [f.type || BasicInput.Text],
+            {
+              ...InputComponents,
+              ...components,
+            },
           );
 
-        const value = pathOr(undefined, path === '.' ? [] : path.split('.'), o);
-        const inputProps = prepareComputedProps(o, rest);
+          if (!InputComponent)
+            throw new Error(
+              `Autoform has encountered an invalid input type: ${f.type}.\n
+            Available types are: ${Object.keys(InputComponents)}`,
+            );
 
-        return condition(o)
-          ? React.createElement(InputComponent, {
-              key: `autoform-field-${path}`,
-              value,
-              onChange: (value: any) =>
-                updateFn(assocPath(path === '.' ? [] : path.split('.'), value, o)),
-              error,
-              ...inputProps,
-            })
-          : null;
-      })}
-    </div>
+          const value = pathOr(undefined, path === '.' ? [] : path.split('.'), o);
+          const inputProps = prepareComputedProps(o, rest);
+
+          return condition(o)
+            ? React.createElement(InputComponent, {
+                key: `autoform-field-${path}`,
+                value,
+                onChange: (value: any) =>
+                  updateFn(assocPath(path === '.' ? [] : path.split('.'), value, o)),
+                error,
+                ...inputProps,
+              })
+            : null;
+        })}
+      </div>{' '}
+    </AutoformTranslation.Provider>
   );
 };

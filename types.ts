@@ -33,7 +33,7 @@ export interface Field<T> {
   label: string;
   condition?: (o: T) => boolean;
   type?: string;
-  validation?: Schema;
+  validation?: string | object;
   [additionalProp: string]: any;
 }
 
@@ -63,6 +63,7 @@ export type AutoformHookParams<T> = {
   andOptions?: {
     components?: ComponentsDictionary;
     handleValidationResult?(result: ValidationResult): void;
+    translationFunction?(...args: any[]): string;
     [additionalProp: string]: any;
   };
 };
