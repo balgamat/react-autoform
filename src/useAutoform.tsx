@@ -1,5 +1,5 @@
 import { AutoformHookParams } from '../types';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Autoform } from './Autoform';
 import { ValidationResult } from '../types';
 
@@ -13,6 +13,10 @@ export const useAutoform = <T,>({
   const [validationResult, setValidationResult] = useState<ValidationResult>({
     valid: true,
   });
+
+  useEffect(() => {
+    updateFn(onObject);
+  }, [onObject]);
 
   return [
     o,
