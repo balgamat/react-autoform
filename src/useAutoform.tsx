@@ -6,7 +6,9 @@ import { ValidationResult } from '../types';
 export const useAutoform = <T,>({
   onObject = {} as T,
   withFields,
-  andOptions = {},
+  andOptions = {
+    translationFunction: t => t.toString()
+  },
 }: AutoformHookParams<T>): [T, ReactElement, ValidationResult] => {
   const [o, updateFn] = useState(onObject);
 

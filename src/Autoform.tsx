@@ -5,6 +5,7 @@ import { AutoformProps, BasicInput, InputComponentProps, ValidationResult } from
 import { prepareComputedProps } from './prepareComputedProps';
 import { createValidationSchema } from './validation';
 import { ValidationError } from 'joi';
+import uuid from 'uuid';
 
 export const AutoformTranslation = React.createContext((key: string, options: any) => key);
 
@@ -14,9 +15,9 @@ export const Autoform = <T,>({
   updateFn,
   components,
   handleValidationResult,
-  ...rest
+  translationFunction,
+  style,
 }: AutoformProps<T>) => {
-  const t = rest.translationFunction || (() => {});
   const [validationResult, setValidationResult] = useState<ValidationResult>({
     valid: true,
   });
@@ -37,8 +38,8 @@ export const Autoform = <T,>({
   }, [o]);
 
   return (
-    <AutoformTranslation.Provider value={t}>
-      <div className={`autoform`} {...rest}>
+    <AutoformTranslation.Provider value={translationFunction}>
+      <div className={`autoform`} style={style}>
         {fields.map((f) => {
           const { type, path, condition = () => true, ...rest } = f;
 
@@ -47,7 +48,7 @@ export const Autoform = <T,>({
             validationResult.error?.details || [],
           );
           const error = errorDetails
-            ? t(`VALIDATION.${errorDetails.type.toUpperCase()}`, {
+            ? translationFunction(`VALIDATION.${errorDetails.type.toUpperCase()}`, {
                 ...errorDetails.context,
                 label: f.label,
                 ref: errorDetails.context?.ref
@@ -78,7 +79,7 @@ export const Autoform = <T,>({
 
           return condition(o)
             ? React.createElement(InputComponent, {
-                key: `autoform-field-${path}`,
+                key: uuid.v4(),
                 value,
                 onChange: (value: any) =>
                   updateFn(assocPath(path === '.' ? [] : path.split('.'), value, o)),
@@ -87,7 +88,7 @@ export const Autoform = <T,>({
               })
             : null;
         })}
-      </div>{' '}
+      </div>
     </AutoformTranslation.Provider>
   );
 };

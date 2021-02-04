@@ -9,6 +9,7 @@
     "sourceMap": true,
     "declaration": true,
     "outDir": "./dist",
+    "resolveJsonModule": true,
     "strict": true,
     "jsx": "react",
     "esModuleInterop": true

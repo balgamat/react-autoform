@@ -13,6 +13,7 @@ import {
 import { customizeInputComponents } from './src/InputComponents';
 import { validation } from './src/validation';
 import { useAutoform } from './src/useAutoform';
+import * as locales from './src/locales';
 
 export {
   Autoform,
@@ -28,5 +29,6 @@ export {
   InputComponentProps,
   useAutoform,
   validation,
+  locales,
   ValidationResult,
 };

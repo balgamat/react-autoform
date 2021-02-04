@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react';
+import { CSSProperties, FC, ReactElement } from 'react';
 import { Schema, ValidationError } from 'joi';
 
 type K1<T> = T[keyof T];
@@ -49,7 +49,8 @@ export type AutoformProps<T> = {
   updateFn(o: T): void;
   components?: ComponentsDictionary;
   handleValidationResult?(result: ValidationResult): void;
-  [additionalProp: string]: any;
+  style?: CSSProperties;
+  translationFunction(...args: any[]): string;
 };
 
 export interface ValidationResult {
@@ -63,8 +64,8 @@ export type AutoformHookParams<T> = {
   andOptions?: {
     components?: ComponentsDictionary;
     handleValidationResult?(result: ValidationResult): void;
-    translationFunction?(...args: any[]): string;
-    [additionalProp: string]: any;
+    translationFunction(...args: any[]): string;
+    style?: CSSProperties;
   };
 };
 
