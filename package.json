@@ -1,6 +1,6 @@
 {
   "name": "@balgamat/react-autoform",
-  "version": "8.0.3",
+  "version": "9.0.1",
   "description": "A React component for simple creation of forms to edit any object, that can e.g. serve as the C+U in your CRUD.",
   "author": "Matej Balga",
   "main": "dist/index.js",
@@ -30,34 +30,26 @@
     "ui"
   ],
   "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-i18next": "^11.7.3"
+    "react": "^16.13.1"
   },
   "devDependencies": {
-    "@types/i18next": "^13.0.0",
     "@types/jest": "^26.0.14",
     "@types/ramda": "^0.26.33",
     "@types/react": "^16.9.9",
-    "@types/react-i18next": "^8.1.0",
     "@types/uuid": "^8.3.0",
-    "@types/yup": "^0.29.7",
-    "i18next": "^19.8.3",
+    "@types/yup": "^0.29.11",
     "jest": "^26.5.2",
     "prettier": "^1.18.2",
     "pretty-quick": "^2.0.0",
-    "react-i18next": "^11.7.3",
     "ts-jest": "^26.4.1",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^4.0.3"
   },
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
-    "joi": "^17.3.0",
-    "joi-json": "^4.0.0",
     "ramda": "^0.26.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yup": "^0.32.8"
   },
   "jest": {
     "preset": "ts-jest/presets/js-with-ts"
