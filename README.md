@@ -68,20 +68,20 @@ const fields = [
   {
     label: 'What is in the cup?',
     path: 'contains',
-    validation: 'string:required',
+    validation: validation.string().required()
   },
   {
     label: 'Volume',
     path: 'volume.value',
     type: BasicInputs.Number,
-    validation: 'number:max=1000,required',
+    validation: validation.number().max(1000),
   },
   {
     label: 'Unit',
     path: 'volume.unit',
     type: BasicInputs.Select,
     options: [{ data: 'ml', label: 'Millilitres' }, { data: 'oz', label: 'Ounces' }],
-    validation: 'string:min=1,max=10,required',
+    validation: validation.string().required(),
   },
 ];
 
@@ -93,7 +93,7 @@ const [editedCup, form, validationResult] = useAutoform({ onObject: CUP, withFie
 
 And voilà, you got yourself a form. Easy, wasn't it?
 
-P.S.: Take a note of the `validation` property. Looks familiar? That's because it is in fact [Joi](https://joi.dev/), reexported here as `validation` for your convenience, but using a little quicker syntax here.
+P.S.: Take a note of the `validation` property. Looks familiar? That's because it is in fact [Yup](https://github.com/jquense/yup), reexported here as `validation` for your convenience.
 
 ### Computed props
 

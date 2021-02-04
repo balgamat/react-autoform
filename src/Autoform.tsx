@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
-import { assocPath, find, pathOr, propEq } from 'ramda';
+import { assoc, assocPath, find, pathOr, propEq } from 'ramda';
 import { InputComponents } from './InputComponents';
 import { AutoformProps, BasicInput, InputComponentProps, ValidationResult } from '../types';
 import { prepareComputedProps } from './prepareComputedProps';
-import { createValidationSchema } from './validation';
+import { createValidationSchema, defineLocale } from './validation';
 import { ValidationError } from 'joi';
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 
 export const AutoformTranslation = React.createContext((key: string, options: any) => key);
 
@@ -22,19 +22,28 @@ export const Autoform = <T,>({
     valid: true,
   });
 
+  useEffect(() => {
+    defineLocale(translationFunction, fields.reduce((acc,f) => assoc(f.path, f.label, acc),{}))
+  }, [translationFunction()])
+
   const schema = createValidationSchema(fields);
 
   useEffect(() => {
+    updateFn(schema.cast(o));
+  }, []);
+
+  useEffect(() => {
     schema
-      .validateAsync(o, { abortEarly: false })
+      .validate(o)
       .then(() => {
         setValidationResult({ valid: true });
         handleValidationResult && handleValidationResult({ valid: true });
-      })
-      .catch((error: ValidationError) => {
+      }).catch((error: ValidationError) => {
         setValidationResult({ valid: false, error });
+
         handleValidationResult && handleValidationResult({ valid: false, error });
-      });
+      }
+    )
   }, [o]);
 
   return (
@@ -47,15 +56,7 @@ export const Autoform = <T,>({
             propEq('path', f.path.split('.')),
             validationResult.error?.details || [],
           );
-          const error = errorDetails
-            ? translationFunction(`VALIDATION.${errorDetails.type.toUpperCase()}`, {
-                ...errorDetails.context,
-                label: f.label,
-                ref: errorDetails.context?.ref
-                  ? find(propEq('path', f.path.split('.')), errorDetails.context.ref).label
-                  : undefined,
-              })
-            : undefined;
+          const error = errorDetails ? errorDetails.message : f.customError;
 
           if (type === BasicInput.Hidden) return null;
 
